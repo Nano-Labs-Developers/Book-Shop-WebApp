@@ -1,0 +1,14 @@
+﻿@page "/Categories"
+@inject ICategoryService CategoryService
+
+<CategoryList />
+
+@code {
+    [Parameter]
+    public int Page { get; set; } = 1;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await CategoryService.GetCategories();
+    }
+}

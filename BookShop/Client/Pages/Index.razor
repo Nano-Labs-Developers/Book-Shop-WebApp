@@ -1,0 +1,15 @@
+﻿@page "/"
+@page "/{categoryURL}"
+@inject IBookService BookService
+
+<PageTitle>EBooks</PageTitle>
+
+<Home />
+
+
+@code {
+	[Parameter]
+	public string? categoryURL { get; set; } = null;
+
+	
+}

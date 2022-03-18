@@ -1,0 +1,39 @@
+﻿@inject ICategoryService CategoryService
+
+@if (CategoryService.Categories == null || CategoryService.Categories.Count == 0)
+{
+    <span>@CategoryService.Message</span>
+}
+else
+{
+    <div class="container-fluid">
+        <div class="d-flex flex-row flex-wrap">
+            @{
+                foreach (var category in CategoryService.Categories)
+                {
+                    <a class="user-select-none text-decoration-none" href="/category/@category.Id">
+                        <div class="card" style="width: 18rem; height: 28rem;">
+                            <img class="card-img-top" style="height: 18rem; width: 286px;" src="/img/Adventure.jpg" alt="@category.Name">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <span class="text-dark fw-bold">@category.Name</span>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+    </div>
+    for (var i = 1; i <= CategoryService.PageCount; i++)
+    {
+        <a class="btn
+                 @(i == CategoryService.CurrentPage ? "btn-info" : "btn-outline-info")
+                 page-selection"
+                 href="/search/@i">@i</a>
+    }
+}
+
+@code {
+	
+}

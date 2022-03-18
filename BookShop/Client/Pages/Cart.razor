@@ -1,0 +1,93 @@
+﻿@page "/cart"
+@inject ICartService CartService
+@inject IOrderService OrderService
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Shopping Cart</PageTitle>
+
+<h3>Shopping Cart</h3>
+
+@if (cartBooks == null || cartBooks.Count == 0)
+{
+    <span>@message</span>
+}
+else
+{
+    <div>
+        @foreach (var book in cartBooks)
+        {
+            <div class="container">
+                <div class="image-wrapper">
+                    <img src="@book.ImageUrl" class="image" />
+                </div>
+                <div class="name">
+                    <h5><a href="/book/@book.BookId">@book.Title</a></h5>
+                    <span>@book.BookType</span><br />
+                    <input type="number" value="@book.Quantity"
+                   @onchange="@((ChangeEventArgs e) => UpdateQuantity(e, book))"
+                   class="form-control input-quantity"
+                   min="1" />
+                    <button class="btn-delete" @onclick="@(() =>
+                        RemoveBookFromCart(book.BookId, book.BookTypeId))">
+                        Delete
+                    </button>
+                </div>
+                <div class="cart-book-price">$@(book.Price * book.Quantity)</div>
+            </div>
+        }
+        <div class="cart-book-price">
+            Total (@cartBooks.Count): $@cartBooks.Sum(book => @book.Price * book.Quantity)
+        </div>
+    </div>
+    @if (isAuthenticated)
+    {
+        <div>
+            <h5>Delivery Address</h5>
+            <AddressForm />
+        </div>
+    }
+    <button @onclick="PlaceOrder" class="btn alert-success float-end mt-1">Checkout</button>
+}
+
+@code {
+    List<CartBookResponse> cartBooks = null;
+    string message = "Loading cart...";
+    bool isAuthenticated = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isAuthenticated = await AuthService.IsUserAuthenticated();
+        await LoadCart();
+    }
+
+    private async Task RemoveBookFromCart(int bookId, int bookTypeId)
+    {
+        await CartService.RemoveBookFromCart(bookId, bookTypeId);
+        await LoadCart();
+    }
+
+    private async Task LoadCart()
+    {
+        await CartService.GetCartItemsCount();
+        cartBooks = await CartService.GetCartBooks();
+        if (cartBooks == null || cartBooks.Count == 0)
+        {
+            message = "Your cart is empty.";
+        }
+    }
+
+    private async Task UpdateQuantity(ChangeEventArgs e, CartBookResponse book)
+    {
+        book.Quantity = int.Parse(e.Value.ToString());
+        if (book.Quantity < 1)
+            book.Quantity = 1;
+        await CartService.UpdateQuantity(book);
+    }
+
+    private async Task PlaceOrder()
+    {
+        string url = await OrderService.PlaceOrder();
+        NavigationManager.NavigateTo(url);
+    }
+}

@@ -1,0 +1,33 @@
+﻿@page "/book"
+@page "/search/{searchText}/{page:int}"
+@page "/book/{categoryURL}"
+@inject IBookService BookService
+
+<div class="mb-4">
+    <Search />
+</div>
+
+<BookList />
+
+@code {
+    [Parameter]
+    public string? CategoryURL { get; set; } = null;
+
+    [Parameter]
+    public string? SearchText { get; set; } = null;
+
+    [Parameter]
+    public int Page { get; set; } = 1;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (SearchText != null)
+        {
+            await BookService.SearchBooks(SearchText, Page);
+        }
+        else
+        {
+            await BookService.GetBooks(CategoryURL);
+        }
+    }
+}

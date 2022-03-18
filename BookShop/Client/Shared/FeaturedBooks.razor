@@ -1,0 +1,45 @@
+﻿@inject IBookService BookService
+@implements IDisposable
+
+<center><h2>Top Books of Today</h2></center>
+@if (BookService.Books == null || BookService.Books.Count == 0)
+{
+    <span>@BookService.Message</span>
+}
+else
+{
+    <div class="container">
+        @foreach (var book in BookService.Books)
+        {
+            @if (book.Featured)
+            {
+                <div class="featured-book">
+                    <div>
+                        <a href="book/@book.Id">
+                            <img src="@book.ImageURL">
+                        </a>
+                    </div>
+                    <h4><a href="book/@book.Id">@book.Title</a></h4>
+                    @if (book.Variants != null && book.Variants.Count > 0)
+                    {
+                        <h5 class="price">
+                            $@book.Variants[0].Price
+                        </h5>
+                    }
+                </div>
+            }
+        }
+    </div>
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        BookService.OnBookChanged += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        BookService.OnBookChanged -= StateHasChanged;
+    }
+}

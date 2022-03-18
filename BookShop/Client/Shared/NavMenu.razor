@@ -1,0 +1,35 @@
+﻿<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <NavLink class="navbar-brand" href="">
+            <img src="/img/favicon.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+            EBooks
+        </NavLink>
+        <button class="navbar-toggler" type="button" @onclick="ToggleNavMenu" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav">
+                <NavLink class="nav-link" href="">Home</NavLink>
+                <NavLink class="nav-link" href="book">Books</NavLink>
+                <NavLink class="nav-link" href="categories">Categories</NavLink>
+                <NavLink class="nav-link" href="about">About</NavLink>
+            </div>
+        </div>
+        <div class="d-flex">
+            <UserButton />
+            <span class="ms-2"></span>
+            <CartCounter />
+        </div>
+    </div>
+</nav>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

@@ -1,0 +1,53 @@
+﻿@page "/contact"
+
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<section class="contact_section layout_padding">
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-6 mt-5">
+                <div class="heading_container ">
+                    <h2 class="">Contact Us</h2>
+                </div>
+                @{/*
+                <EditForm Model="contact" OnValidSubmit="SendContactMessage">
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                    <div class="mb-0">
+                        <label for="name">Title</label>
+                        <InputText id="title" @bind-Value="contact.Name" class="form-control"></InputText>
+                    </div>
+                    <div class="mb-0">
+                        <label for="email">Title</label>
+                        <InputText id="email" @bind-Value="contact.Email" class="form-control"></InputText>
+                    </div>
+                    <button type="submit" class="btn btn-primary float-end">Submit</button>
+                    <ValidationSummary></ValidationSummary>
+                </EditForm>
+                */}
+            </div>
+            <div class="col-md-6">
+                <div class="img-box ms-5">
+                    <img src="/images/contact-img.png" class="" style="max-height:400px; max-width:400px;" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    /*
+    Contact contact = new Contact(); 
+    bool loading = true;
+    string msg = "Loading...";
+
+    async void SendContactMessage()
+    {
+        var result = await BookService.CreateBook(book);
+        NavigationManager.NavigateTo($"admin/book/{result.Id}");
+    }
+    */
+}
