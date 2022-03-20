@@ -24,6 +24,7 @@ namespace BookShop.Server.Services.PaymentService
         {
             var books = (await _cartService.GetDbCartBooks()).Data;
             var lineItems = new List<SessionLineItemOptions>();
+
             books.ForEach(book => lineItems.Add(new SessionLineItemOptions
             {
                 PriceData = new SessionLineItemPriceDataOptions
@@ -53,8 +54,8 @@ namespace BookShop.Server.Services.PaymentService
                 },
                 LineItems = lineItems,
                 Mode = "payment",
-                SuccessUrl = "https://localhost:7226/order-success",
-                CancelUrl = "https://localhost:7226/cart"
+                SuccessUrl = "https://localhost:7207/OrderSuccess",
+                CancelUrl = "https://localhost:7207/cart"
             };
 
             var service = new SessionService();
